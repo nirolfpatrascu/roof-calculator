@@ -102,14 +102,14 @@ export default function MaterialSelector({
   }, [finishId]);
 
   const selectClass =
-    "w-full rounded-lg border border-gray-300 px-4 py-2.5 text-base bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition disabled:bg-gray-100 disabled:text-gray-400";
+    "w-full rounded-lg border border-[#ebebed] px-4 py-2.5 text-base bg-white focus:border-brand focus:ring-2 focus:ring-brand/30 outline-none transition disabled:bg-[#f8f8f8] disabled:text-[#434343]";
 
   return (
     <div>
       <div className="space-y-4">
         {/* Manufacturer */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Producător</label>
+          <label className="block text-sm font-medium text-[#1e1e1e] mb-1">Producător</label>
           <select
             value={manufacturerId ?? ""}
             onChange={(e) => onManufacturerChange(e.target.value || null)}
@@ -124,7 +124,7 @@ export default function MaterialSelector({
 
         {/* Material Type */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Tip material</label>
+          <label className="block text-sm font-medium text-[#1e1e1e] mb-1">Tip material</label>
           <select
             value={materialTypeId ?? ""}
             onChange={(e) => onMaterialTypeChange(e.target.value || null)}
@@ -140,7 +140,7 @@ export default function MaterialSelector({
 
         {/* Model */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Model</label>
+          <label className="block text-sm font-medium text-[#1e1e1e] mb-1">Model</label>
           <select
             value={modelId ?? ""}
             onChange={(e) => onModelChange(e.target.value || null)}
@@ -156,7 +156,7 @@ export default function MaterialSelector({
 
         {/* Finish */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Finisaj</label>
+          <label className="block text-sm font-medium text-[#1e1e1e] mb-1">Finisaj</label>
           <select
             value={finishId ?? ""}
             onChange={(e) => onFinishChange(e.target.value || null)}
@@ -173,16 +173,16 @@ export default function MaterialSelector({
         {/* Products (Thickness + Color) */}
         {finishId && products.length > 0 && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Grosime</label>
+            <label className="block text-sm font-medium text-[#1e1e1e] mb-2">Grosime</label>
             <div className="space-y-2">
               {products.map((p) => (
                 <button
                   key={p.id}
                   onClick={() => onProductChange(p.id)}
-                  className={`w-full text-left rounded-lg border-2 p-4 transition-all ${
+                  className={`w-full text-left rounded-lg border-2 p-4 transition-all cursor-pointer ${
                     productId === p.id
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200 bg-white hover:border-gray-300"
+                      ? "border-brand bg-brand/10"
+                      : "border-[#ebebed] bg-white hover:border-teal"
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -194,7 +194,7 @@ export default function MaterialSelector({
                         </span>
                       )}
                     </div>
-                    <span className="text-lg font-bold text-blue-600">
+                    <span className="text-lg font-bold text-[#1e1e1e]">
                       {p.price_per_sqm.toFixed(2)} €/m²
                     </span>
                   </div>

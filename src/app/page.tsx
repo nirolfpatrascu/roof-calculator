@@ -9,28 +9,17 @@ import OfferSummary from "@/components/calculator/OfferSummary";
 interface SectionProps {
   number: number;
   title: string;
-  enabled: boolean;
   children: React.ReactNode;
 }
 
-function Section({ number, title, enabled, children }: SectionProps) {
+function Section({ number, title, children }: SectionProps) {
   return (
-    <section
-      className={`rounded-2xl border-2 p-6 transition-all ${
-        enabled
-          ? "border-gray-200 bg-white"
-          : "border-gray-100 bg-gray-50 opacity-50 pointer-events-none"
-      }`}
-    >
+    <section className="rounded-2xl border-2 border-[#ebebed] bg-white p-6 transition-all">
       <div className="flex items-center gap-3 mb-4">
-        <span
-          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-            enabled ? "bg-blue-500 text-white" : "bg-gray-300 text-white"
-          }`}
-        >
+        <span className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-brand text-brand-text">
           {number}
         </span>
-        <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+        <h2 className="text-lg font-semibold text-[#1e1e1e]">{title}</h2>
       </div>
       {children}
     </section>
@@ -45,18 +34,18 @@ export default function Home() {
   const hasProduct = state.productId !== null;
 
   return (
-    <div className="min-h-screen bg-gray-50 print:bg-white">
+    <div className="min-h-screen bg-[#f8f8f8] print:bg-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 print:hidden">
+      <header className="bg-[#1e1e1e] print:hidden">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">Calculator Acoperiș</h1>
-          <p className="text-sm text-gray-500">Calculează materialele necesare pentru acoperișul tău</p>
+          <h1 className="text-2xl font-bold text-brand">Calculator Acoperiș</h1>
+          <p className="text-sm text-gray-400">Calculează materialele necesare pentru acoperișul tău</p>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-6 space-y-6 print:p-0 print:space-y-0">
         {/* Section 1: Roof Type */}
-        <Section number={1} title="Tip acoperiș" enabled={true}>
+        <Section number={1} title="Tip acoperiș">
           <RoofTypeSelector
             selected={state.roofType}
             onSelect={(type) => dispatch({ type: "SET_ROOF_TYPE", payload: type })}
@@ -65,7 +54,7 @@ export default function Home() {
 
         {/* Section 2: Dimensions */}
         {hasRoofType && (
-          <Section number={2} title="Dimensiuni" enabled={true}>
+          <Section number={2} title="Dimensiuni">
             <DimensionInput
               roofType={state.roofType!}
               dimensions={state.dimensions}
@@ -77,7 +66,7 @@ export default function Home() {
 
         {/* Section 3: Material */}
         {hasArea && (
-          <Section number={3} title="Material" enabled={true}>
+          <Section number={3} title="Material">
             <MaterialSelector
               manufacturerId={state.manufacturerId}
               materialTypeId={state.materialTypeId}
@@ -95,7 +84,7 @@ export default function Home() {
 
         {/* Section 4: Offer */}
         {hasProduct && (
-          <Section number={4} title="Ofertă" enabled={true}>
+          <Section number={4} title="Ofertă">
             <OfferSummary state={state} />
           </Section>
         )}
@@ -105,7 +94,7 @@ export default function Home() {
           <div className="text-center pb-8 print:hidden">
             <button
               onClick={() => dispatch({ type: "RESET" })}
-              className="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
+              className="px-6 py-2.5 rounded-lg border-2 border-[#1e1e1e] text-[#1e1e1e] font-medium hover:bg-[#1e1e1e] hover:text-white transition"
             >
               Resetează calculul
             </button>
