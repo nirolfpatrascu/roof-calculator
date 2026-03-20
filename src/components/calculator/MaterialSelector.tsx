@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Manufacturer, MaterialType, Model, Finish, Product } from "@/lib/types";
+import { calculateSheets, calculateTotalPrice } from "@/lib/calculations";
+
+const VAT_RATE = 19;
 
 interface MaterialSelectorProps {
   manufacturerId: string | null;
@@ -10,6 +13,8 @@ interface MaterialSelectorProps {
   modelId: string | null;
   finishId: string | null;
   productId: string | null;
+  totalArea: number;
+  wastePercentage: number;
   onManufacturerChange: (id: string | null) => void;
   onMaterialTypeChange: (id: string | null) => void;
   onModelChange: (id: string | null) => void;
@@ -23,6 +28,8 @@ export default function MaterialSelector({
   modelId,
   finishId,
   productId,
+  totalArea,
+  wastePercentage,
   onManufacturerChange,
   onMaterialTypeChange,
   onModelChange,
@@ -175,34 +182,44 @@ export default function MaterialSelector({
           <div>
             <label className="block text-sm font-medium text-[#1e1e1e] mb-2">Grosime</label>
             <div className="space-y-2">
-              {products.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => onProductChange(p.id)}
-                  className={`w-full text-left rounded-lg border-2 p-4 transition-all cursor-pointer ${
-                    productId === p.id
-                      ? "border-brand bg-brand/10"
-                      : "border-[#ebebed] bg-white hover:border-teal"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-semibold">{p.thickness_mm} mm</span>
-                      {p.color && (
-                        <span className="ml-2 text-sm px-2 py-0.5 rounded bg-gray-100 text-gray-600">
-                          {p.color}
-                        </span>
-                      )}
+              {products.map((p) => {
+                const sheets = calculateSheets(totalArea, p.sheet_height_m, p.sheet_width_m, wastePercentage);
+                const valueExVat = calculateTotalPrice(totalArea, p.price_per_sqm, wastePercentage);
+                const totalWithVat = Number((valueExVat * (1 + VAT_RATE / 100)).toFixed(2));
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => onProductChange(p.id)}
+                    className={`w-full text-left rounded-lg border-2 p-4 transition-all cursor-pointer ${
+                      productId === p.id
+                        ? "border-brand bg-brand/10"
+                        : "border-[#ebebed] bg-white hover:border-teal"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="font-semibold">{p.thickness_mm} mm</span>
+                        {p.color && (
+                          <span className="ml-2 text-sm px-2 py-0.5 rounded bg-gray-100 text-gray-600">
+                            {p.color}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-lg font-bold text-[#1e1e1e]">
+                        {p.price_per_sqm.toFixed(2)} €/m²
+                      </span>
                     </div>
-                    <span className="text-lg font-bold text-[#1e1e1e]">
-                      {p.price_per_sqm.toFixed(2)} €/m²
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Foaie: {p.sheet_height_m} × {p.sheet_width_m} m
-                  </p>
-                </button>
-              ))}
+                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#ebebed]">
+                      <p className="text-sm text-[#434343]">
+                        {sheets} buc ({p.sheet_height_m}×{p.sheet_width_m} m/foaie)
+                      </p>
+                      <p className="text-sm font-semibold text-[#1e1e1e]">
+                        ~{totalWithVat.toFixed(2)} € cu TVA
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}

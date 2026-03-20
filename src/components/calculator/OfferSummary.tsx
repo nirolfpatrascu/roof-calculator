@@ -45,6 +45,7 @@ export default function OfferSummary({ state }: OfferSummaryProps) {
     product.price_per_sqm,
     state.wastePercentage
   );
+  const pricePerSheet = Number((product.price_per_sqm * product.sheet_height_m * product.sheet_width_m).toFixed(2));
   const vatAmount = Number(((valueExVat * VAT_RATE) / 100).toFixed(2));
   const totalWithVat = Number((valueExVat + vatAmount).toFixed(2));
 
@@ -135,9 +136,9 @@ export default function OfferSummary({ state }: OfferSummaryProps) {
             <tr>
               <td className="border border-[#ebebed] px-3 py-2 text-center">1</td>
               <td className="border border-[#ebebed] px-3 py-2">{product.name}</td>
-              <td className="border border-[#ebebed] px-3 py-2 text-right">{areaWithWaste.toFixed(2)}</td>
-              <td className="border border-[#ebebed] px-3 py-2 text-center">mp</td>
-              <td className="border border-[#ebebed] px-3 py-2 text-right">{product.price_per_sqm.toFixed(2)}</td>
+              <td className="border border-[#ebebed] px-3 py-2 text-right">{totalSheets}</td>
+              <td className="border border-[#ebebed] px-3 py-2 text-center">buc</td>
+              <td className="border border-[#ebebed] px-3 py-2 text-right">{pricePerSheet.toFixed(2)}</td>
               <td className="border border-[#ebebed] px-3 py-2 text-right">{valueExVat.toFixed(2)}</td>
               <td className="border border-[#ebebed] px-3 py-2 text-right">{vatAmount.toFixed(2)}</td>
               <td className="border border-[#ebebed] px-3 py-2 text-right font-medium">{totalWithVat.toFixed(2)}</td>

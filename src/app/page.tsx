@@ -73,6 +73,8 @@ export default function Home() {
               modelId={state.modelId}
               finishId={state.finishId}
               productId={state.productId}
+              totalArea={state.totalArea}
+              wastePercentage={state.wastePercentage}
               onManufacturerChange={(id) => dispatch({ type: "SET_MANUFACTURER", payload: id })}
               onMaterialTypeChange={(id) => dispatch({ type: "SET_MATERIAL_TYPE", payload: id })}
               onModelChange={(id) => dispatch({ type: "SET_MODEL", payload: id })}
